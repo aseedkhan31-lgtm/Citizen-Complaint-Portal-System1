@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <!-- CDN -->
+    <!-- For css -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- For js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script> 
+
+<!-- Local system -->
+<link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
+<script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <img src="pro.jpg" width="60">
+            <a class="navbar-brand fw-bold" href="#">ADMIN PANEL</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'admin_dashboard_view' %}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'user_dashboard_view' %}">Logout</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white p-3"><h5>Total Cases: 150</h5></div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-warning p-3"><h5>Pending: 45</h5></div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white p-3"><h5>Resolved: 105</h5></div>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">Recent Complaints</div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Citizen</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#001</td>
+                            <td>Abdul Salam</td>
+                            <td>Road Damage</td>
+                            <td><span class="badge bg-warning">In Progress</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <p>© 2026 Citizen's Complaint Portal | HITEC University Project</p>
+    </footer>
+</body>
+</html>
