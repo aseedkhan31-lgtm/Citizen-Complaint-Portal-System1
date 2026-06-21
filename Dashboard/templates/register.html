@@ -15,7 +15,8 @@
 <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+   <nav  class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    
         <div class="container">
             <img src="pro.jpg" width="60">
             <a class="navbar-brand fw-bold" href="#">CITIZEN PORTAL</a>
@@ -26,7 +27,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{% url 'user_dashboard_view' %}">Home</a></li>
                     <li class="nav-item"><a class="nav-link active" href="{% url 'login_view' %}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">User Complaint</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login_view' %}">User Complaint</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'login_view' %}">Admin Dashboard</a></li>
                 </ul>
             </div>
@@ -39,36 +40,37 @@
                 <div class="card shadow">
                     <div class="card-header bg-success text-white"><h4>Citizen Registration</h4></div>
                     <div class="card-body">
-                        <form action="#" class="was-validated" novalidate>
-                       <div class="mb-3">
-                        <label for="fname" class="form-label fw-bold">Full Name:</label>
-                        <input type="text" class="form-control" id="fname" placeholder="Enter full name" required>
+                        <form method="POST" action="" class="was-validated" novalidate>
+                            {% csrf_token %}
+                            <div class="mb-3">
+                        <label for="full_name" class="form-label fw-bold">Full Name:</label>
+                        <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Enter full name" required>
                         <div class="valid-feedback">Looks good!</div>
                         <div class="invalid-feedback">Please enter your full name.</div>
                     </div>
                             <div class="mb-3">
                         <label for="cnic" class="form-label fw-bold">CNIC Number:</label>
-                        <input type="text" class="form-control" id="cnic" placeholder="xxxxx-xxxxxxx-x" pattern="^[0-9]{5}-[0-9]{7}-[0-9]{1}$" required>
+                        <input type="text" class="form-control" id="cnic" name="cnic" placeholder="xxxxx-xxxxxxx-x" pattern="^[0-9]{5}-[0-9]{7}-[0-9]{1}$" required>
                         <div class="invalid-feedback">Format must be: 12345-1234567-1</div>
                     </div>
                            <div class="mb-3">
                         <label for="email" class="form-label fw-bold">Email Address:</label>
-                        <input type="email" class="form-control" id="email" placeholder="example@mail.com" required>
+                        <input type="email" class="form-control"id="email" name="email" placeholder="example@mail.com" required>
                         <div class="invalid-feedback">Please enter a valid email address.</div>
                     </div>
                     <div class="mb-3">
                         <label for="uname" class="form-label fw-bold">Username:</label>
-                        <input type="text" class="form-control" id="uname" placeholder="Choose a username" required>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Choose a username" required>
                         <div class="invalid-feedback">Username is required.</div>
                     </div>
 
                     <div class="mb-3">
                         <label for="pwd" class="form-label fw-bold">Password:</label>
-                        <input type="password" class="form-control" id="pwd" placeholder="Enter password" minlength="8" required>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" minlength="8" required>
                         <div class="invalid-feedback">Password must be at least 8 characters.</div>
                     </div>
                     <div class="form-check mb-4">
-                        <input class="form-check-input" type="checkbox" id="terms" required>
+                        <input class="form-check-input" type="checkbox" name="terms" required>
                         <label class="form-check-label" for="terms">I agree to the portal terms and conditions.</label>
                         <div class="invalid-feedback">You must agree before submitting.</div>
                     </div>

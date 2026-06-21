@@ -43,12 +43,12 @@
                     <h4 class="mb-0">Citizen Login</h4>
                 </div>
                 <div class="card-body p-4">
-                    <form action="#" class="was-validated" novalidate>
-                        
+                    <form method= "POST" action="" class="was-validated" novalidate>
+                        {% csrf_token %}
                         <div class="mb-3 mt-3">
                             <label for="email" class="form-label fw-bold">Email/Username:</label>
                             <input type="email" class="form-control" id="email" 
-                                   placeholder="Enter email" name="email" required>
+                                   placeholder="Enter email" name="username" required>
                             <div class="valid-feedback">Valid.</div>
                             <div class="invalid-feedback">Please enter your registered email.</div>
                         </div>
@@ -56,7 +56,7 @@
                         <div class="mb-3">
                             <label for="pwd" class="form-label fw-bold">Password:</label>
                             <input type="password" class="form-control" id="pwd" 
-                                   placeholder="Enter password" name="pswd" required>
+                                   placeholder="Enter password" name="password" required>
                             <div class="valid-feedback">Valid.</div>
                             <div class="invalid-feedback">Please enter your password.</div>
                         </div>
@@ -70,6 +70,9 @@
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success btn-lg">Login</button>
                         </div>
+                        {% if error %}
+                            <p style="color:red;">{{ error }}</p>
+                        {% endif %}
 
                     </form>
 
