@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'Dashboard',
+    'Home',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'complaint_portal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'Dashboard' / 'templates'],
+        'DIRS': [BASE_DIR / 'Home' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

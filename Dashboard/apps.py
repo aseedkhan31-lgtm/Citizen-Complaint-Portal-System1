@@ -1,6 +1,5 @@
 from django.apps import AppConfig
 
 
-
-class ComplaintsConfig(AppConfig):
+class DashboardConfig(AppConfig):
     name = 'Dashboard'
