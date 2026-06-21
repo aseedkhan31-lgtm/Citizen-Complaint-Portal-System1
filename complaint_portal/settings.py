@@ -78,13 +78,12 @@ WSGI_APPLICATION = 'complaint_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'ComplaintDB',     # Database Name
-        'USER': 'sa',                    # SQL Server username
-        'PASSWORD': 'Java123',     # SQL Server password
-        'HOST': 'localhost',
-        'PORT': '1433',
+        'NAME': 'ComplaintDB',
+      'HOST': r'DESKTOP-OF4VT0M\SQLEXPRESS',
+       'PORT': '',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
+            'trusted_connection': 'yes',
         },
     }
 }
