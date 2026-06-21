@@ -18,6 +18,8 @@ def home_page_view(request):
 
 def admin_dashboard_view(request):
      return render(request, 'admin/home_page.html')
+def dashboardApp(request):
+    return render(request, 'user/dashboard.html')
 
 def register_view(request):
     if request.method == 'POST':
@@ -59,7 +61,7 @@ def login_view(request):
             if user.is_superuser:
                 return redirect('admin_dashboard_view')
             else:
-                return redirect('home_page_view')
+                return redirect('dashboardApp')
 
             return redirect('home_page_view')
         else:
