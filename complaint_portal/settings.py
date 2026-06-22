@@ -87,13 +87,14 @@ WSGI_APPLICATION = 'complaint_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'ComplaintDB',     # Database Name
-        'USER': 'sa',                    # SQL Server username
-        'PASSWORD': 'Java123',     # SQL Server password
-        'HOST': 'localhost',
+        'NAME': 'CCMS_DB',
+        'USER': 'adminuser',
+        'PASSWORD': 'StrongPassword123!',
+        'HOST': 'ccms-sql-server.database.windows.net',
         'PORT': '1433',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
+            'extra_params': 'Encrypt=yes;TrustServerCertificate=no;'
         },
     }
 }
