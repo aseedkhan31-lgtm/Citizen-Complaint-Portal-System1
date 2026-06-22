@@ -1,133 +1,164 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Complaint Form</title>
+<title>Citizen Dashboard - Submit Complaint</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <style>
-body{
-    background:#f4f7f6;
-}
-.card{
-    border-radius:15px;
-}
+/* ===== BODY ===== */
+body{ background-color: #f4f7f6; margin: 0; }
+/* ===== SIDEBAR ===== */
+.sidebar{ min-height: 100vh; background: #2c3e50; color: white; width: 250px; position: fixed; top: 0; left: 0; transition: 0.3s; z-index: 1000; }
+.sidebar .nav-link{ color: #bdc3c7; padding: 15px 20px; transition: 0.3s; }
+.sidebar .nav-link:hover{ color: white; background: #34495e; }
+.sidebar .nav-link.active{ background: #34495e; color: white; border-left: 4px solid #198754; }
+/* ===== MAIN CONTENT ===== */
+.main-content{ margin-left: 250px; transition: 0.3s; }
+/* ===== CARD ===== */
+.card{ border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; background: white; }
+.card:hover{ transform: translateY(-5px); }
+/* ===== TOP NAV ===== */
+.top-navbar{ background: white; padding: 15px 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+/* ===== MOBILE ===== */
+.menu-btn{ display: none; font-size: 24px; cursor: pointer; }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px){ .sidebar{ left: -250px; } .sidebar.active{ left: 0; } .main-content{ margin-left: 0; } .menu-btn{ display: block; } }
 </style>
-
 </head>
 
 <body>
 
-<div class="container my-5">
-
-    <div class="row justify-content-center">
-        <div class="col-lg-7 col-md-9 col-sm-12">
-
-            <div class="card shadow-sm p-4">
-
-                <h3 class="text-success border-bottom pb-2">
-                    Submit New Complaint
-                </h3>
-
-                <form method="POST" enctype="multipart/form-data" class="needs-validation" n>
-                      {% csrf_token %}
-                    <!-- Name -->
-                    <div class="mb-3">
-                        <label class="form-label">Enter Name *</label>
-                        <input type="text" class="form-control"
-                               id="name"
-                               name="name"
-                               required
-                               minlength="3"
-                               pattern="[A-Za-z\s]+">
-                        <div class="invalid-feedback">
-                            Only letters allowed (min 3 characters)
-                        </div>
-                    </div>
-
-                    <!-- CNIC -->
-                    <div class="mb-3">
-                        <label class="form-label">Enter CNIC *</label>
-                        <input type="text" class="form-control"
-                               id="cnic"
-                               name="cnic"
-                               required
-                               pattern="\d{5}-\d{7}-\d{1}"
-                               placeholder="12345-1234567-1">
-                        <div class="invalid-feedback">
-                            CNIC format: 12345-1234567-1
-                        </div>
-                    </div>
-
-                    <!-- Category -->
-                    <div class="mb-3">
-                        <div class="mb-3">
-    <label class="form-label">
-        Complaint Category *
-    </label>
-
-    <select class="form-select"
-            name="category"
-            required>
-        <option value="">Select Category</option>
-        <option value="road">Road Damage</option>
-        <option value="electricity">Electricity Fault</option>
-        <option value="water">Water Supply</option>
-    </select>
-
-    <div class="invalid-feedback">
-        Please select a category
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="p-4 text-center">
+        <h5>Complaint System</h5>
     </div>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="{% url 'user_dashboard_view' %}" class="nav-link">
+                <i class="bi bi-house me-2"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'user_complain_view' %}" class="nav-link active">
+                <i class="bi bi-plus-circle me-2"></i> Submit Complaint
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'track_complaint_view' %}" class="nav-link">
+                <i class="bi bi-search me-2"></i> Track Complaint
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'track_history_view' %}" class="nav-link">
+                <i class="bi bi-clock-history me-2"></i> View History
+            </a>
+        </li>
+    </ul>
 </div>
 
-                    <!-- Description -->
-                    <div class="mb-3">
-                        <label class="form-label">Description *</label>
-                        <textarea class="form-control"
-                                  rows="4"
-                                  minlength="10"
-                                  name="description"
-                                  class="form-control" required
-                                  required></textarea>
-                        <div class="invalid-feedback">
-                            Minimum 10 characters required
-                        </div>
-                    </div>
+<!-- MAIN -->
+<div class="main-content">
 
-                    <!-- File -->
-                    <div class="mb-3">
-                        <label class="form-label">Evidence *</label>
-                        <input type="file"
-                               class="form-control"
-                               id="fileInput"
-                               name="evidence"
-                               accept=".png,.jpg,.jpeg"
-                               required>
-                        <div class="invalid-feedback">
-                            Only PNG, JPG, JPEG allowed
-                        </div>
-                    </div>
-
-                    <!-- Button -->
-                    <button type="submit" class="btn btn-success w-100">
-                        Submit Complaint
-                    </button>
-
-                </form>
-
+    <!-- TOP NAV -->
+    <div class="top-navbar">
+        <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+        <h5 class="m-0">Submit Complaint</h5>
+        <div class="d-flex align-items-center gap-3">
+            <i class="bi bi-bell fs-5 position-relative">
+                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+            </i>
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                    {% if request.user.userprofile.profile_picture %}
+                        <img src="{{ request.user.userprofile.profile_picture.url }}" alt="Profile" class="rounded-circle" width="30" height="30" style="object-fit: cover;">
+                    {% else %}
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile" class="rounded-circle" width="30" height="30" style="object-fit: cover;">
+                    {% endif %}
+                    {{ request.user.username|default:"Profile" }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'profile_manage_view' %}">Settings</a></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'login_view' %}">Logout</a></li>
+                </ul>
             </div>
+        </div>
+    </div>
 
+    <!-- CONTENT -->
+    <div class="container-fluid p-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow-sm p-4">
+                    <h4 class="text-success border-bottom pb-3 mb-4"><i class="bi bi-journal-text me-2"></i>Submit New Complaint</h4>
+                    
+                    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <!-- Name & CNIC -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Enter Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" required minlength="3" pattern="[A-Za-z\s]+">
+                                <div class="invalid-feedback">Only letters allowed (min 3 characters)</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Enter CNIC <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="cnic" name="cnic" required pattern="\d{5}-\d{7}-\d{1}" placeholder="12345-1234567-1">
+                                <div class="invalid-feedback">CNIC format: 12345-1234567-1</div>
+                            </div>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Complaint Category <span class="text-danger">*</span></label>
+                            <select class="form-select" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="road">Road Damage</option>
+                                <option value="electricity">Electricity Fault</option>
+                                <option value="water">Water Supply</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a category</div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="5" minlength="10" name="description" required placeholder="Describe your issue in detail..."></textarea>
+                            <div class="invalid-feedback">Minimum 10 characters required</div>
+                        </div>
+
+                        <!-- File -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Evidence <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="fileInput" name="evidence" accept=".png,.jpg,.jpeg" required>
+                            <div class="form-text">Attach image proof (PNG, JPG, JPEG)</div>
+                            <div class="invalid-feedback">Only PNG, JPG, JPEG allowed</div>
+                        </div>
+
+                        <!-- Button -->
+                        <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">
+                            <i class="bi bi-send me-2"></i>Submit Complaint
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<!-- SCRIPT -->
+<script>
+function toggleSidebar(){
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{% static 'js/complaint.js' %}"></script>
-
 </body>
 </html>

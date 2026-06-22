@@ -106,6 +106,7 @@ def login_view(request):
             })
 
     return render(request, 'auth/login.html')
+
 # logout
 def logout_view(request):
     logout(request)
