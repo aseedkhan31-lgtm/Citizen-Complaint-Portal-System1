@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizen Dashboard - View History</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+/* ===== BODY ===== */
+body{ background-color: #f4f7f6; margin: 0; }
+/* ===== SIDEBAR ===== */
+.sidebar{ min-height: 100vh; background: #2c3e50; color: white; width: 250px; position: fixed; top: 0; left: 0; transition: 0.3s; z-index: 1000; }
+.sidebar .nav-link{ color: #bdc3c7; padding: 15px 20px; transition: 0.3s; }
+.sidebar .nav-link:hover{ color: white; background: #34495e; }
+.sidebar .nav-link.active{ background: #34495e; color: white; border-left: 4px solid #198754; }
+/* ===== MAIN CONTENT ===== */
+.main-content{ margin-left: 250px; transition: 0.3s; }
+/* ===== CARD ===== */
+.card{ border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; background: white; }
+.card:hover{ transform: translateY(-5px); }
+/* ===== TOP NAV ===== */
+.top-navbar{ background: white; padding: 15px 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+/* ===== MOBILE ===== */
+.menu-btn{ display: none; font-size: 24px; cursor: pointer; }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px){ .sidebar{ left: -250px; } .sidebar.active{ left: 0; } .main-content{ margin-left: 0; } .menu-btn{ display: block; } }
+
+/* TABLE STYLING */
+.table-hover tbody tr:hover { background-color: rgba(0,0,0,0.02); }
+.badge-pending { background-color: #f59e0b; color: white; }
+.badge-progress { background-color: #3b82f6; color: white; }
+.badge-resolved { background-color: #10b981; color: white; }
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="p-4 text-center">
+        <h5>Complaint System</h5>
+    </div>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="{% url 'user_dashboard_view' %}" class="nav-link">
+                <i class="bi bi-house me-2"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'user_complain_view' %}" class="nav-link">
+                <i class="bi bi-plus-circle me-2"></i> Submit Complaint
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'track_complaint_view' %}" class="nav-link">
+                <i class="bi bi-search me-2"></i> Track Complaint
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'track_history_view' %}" class="nav-link active">
+                <i class="bi bi-clock-history me-2"></i> View History
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+
+    <!-- TOP NAV -->
+    <div class="top-navbar">
+        <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+        <h5 class="m-0">View History</h5>
+        <div class="d-flex align-items-center gap-3">
+            <div class="dropdown">
+                <i class="bi bi-bell fs-5 position-relative" data-bs-toggle="dropdown" style="cursor: pointer;">
+                    {% if unread_notifications_count > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </i>
+                <ul class="dropdown-menu dropdown-menu-end p-0 shadow" style="width: 300px; border-radius: 10px; overflow: hidden;">
+                    <li class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Notifications</span>
+                        {% if unread_notifications_count > 0 %}
+                        <a href="{% url 'mark_notifications_read' %}" class="text-decoration-none small">Mark all read</a>
+                        {% endif %}
+                    </li>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        {% for notif in user_notifications %}
+                        <li class="p-3 border-bottom {% if not notif.is_read %}bg-light{% endif %}">
+                            <small class="d-block text-muted mb-1">{{ notif.created_at|timesince }} ago</small>
+                            <span class="d-block fs-6">{{ notif.message }}</span>
+                        </li>
+                        {% empty %}
+                        <li class="p-4 text-center text-muted">
+                            <i class="bi bi-bell-slash fs-3 d-block mb-2"></i>
+                            No notifications yet
+                        </li>
+                        {% endfor %}
+                    </div>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                    {% if request.user.userprofile.profile_picture %}
+                        <img src="{{ request.user.userprofile.profile_picture.url }}" alt="Profile" class="rounded-circle" width="30" height="30" style="object-fit: cover;">
+                    {% else %}
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile" class="rounded-circle" width="30" height="30" style="object-fit: cover;">
+                    {% endif %}
+                    {{ request.user.username|default:"Profile" }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'profile_manage_view' %}">Settings</a></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'login_view' %}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container-fluid p-4">
+        
+        <div class="card p-4">
+            <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+                <h4 class="mb-0 text-success"><i class="bi bi-clock-history me-2"></i>Your Submissions</h4>
+                <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-download me-1"></i> Export PDF</button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if complaints %}
+                            {% for c in complaints %}
+                            <tr>
+                                <td class="fw-bold text-success">#{{ c.id }}</td>
+                                <td>{{ c.category|title }}</td>
+                                <td><span class="d-inline-block text-truncate" style="max-width: 250px;">{{ c.description }}</span></td>
+                                <td>
+                                    {% if c.status == 'Pending' %}
+                                        <span class="badge badge-pending rounded-pill px-3 py-2">Pending</span>
+                                    {% elif c.status == 'In Progress' %}
+                                        <span class="badge badge-progress rounded-pill px-3 py-2">In Progress</span>
+                                    {% elif c.status == 'Rejected' %}
+                                        <span class="badge bg-danger rounded-pill px-3 py-2">Rejected</span>
+                                    {% else %}
+                                        <span class="badge badge-resolved rounded-pill px-3 py-2">{{ c.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary rounded-circle"><i class="bi bi-eye"></i></button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <!-- Dummy Data -->
+                            <tr>
+                                <td class="fw-bold text-success">#1024</td>
+                                <td>Electricity</td>
+                                <td><span class="d-inline-block text-truncate" style="max-width: 250px;">Transformer blasted in sector 4...</span></td>
+                                <td><span class="badge badge-pending rounded-pill px-3 py-2">Pending</span></td>
+                                <td><button class="btn btn-sm btn-primary rounded-circle"><i class="bi bi-eye"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-success">#1021</td>
+                                <td>Road Damage</td>
+                                <td><span class="d-inline-block text-truncate" style="max-width: 250px;">Huge pothole near the main market...</span></td>
+                                <td><span class="badge badge-progress rounded-pill px-3 py-2">In Progress</span></td>
+                                <td><button class="btn btn-sm btn-primary rounded-circle"><i class="bi bi-eye"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-success">#0988</td>
+                                <td>Sanitation</td>
+                                <td><span class="d-inline-block text-truncate" style="max-width: 250px;">Garbage dump not cleared for weeks...</span></td>
+                                <td><span class="badge badge-resolved rounded-pill px-3 py-2">Resolved</span></td>
+                                <td><button class="btn btn-sm btn-primary rounded-circle"><i class="bi bi-eye"></i></button></td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-end mb-0">
+                    <li class="page-item disabled"><a class="page-link text-muted" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link bg-success border-success text-white" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link text-success" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link text-success" href="#">Next</a></li>
+                </ul>
+            </nav>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+function toggleSidebar(){
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

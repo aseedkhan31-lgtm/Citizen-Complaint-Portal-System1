@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizen Dashboard - Track Complaint</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+/* ===== BODY ===== */
+body{ background-color: #f4f7f6; margin: 0; }
+/* ===== SIDEBAR ===== */
+.sidebar{ min-height: 100vh; background: #2c3e50; color: white; width: 250px; position: fixed; top: 0; left: 0; transition: 0.3s; z-index: 1000; }
+.sidebar .nav-link{ color: #bdc3c7; padding: 15px 20px; transition: 0.3s; }
+.sidebar .nav-link:hover{ color: white; background: #34495e; }
+.sidebar .nav-link.active{ background: #34495e; color: white; border-left: 4px solid #198754; }
+/* ===== MAIN CONTENT ===== */
+.main-content{ margin-left: 250px; transition: 0.3s; }
+/* ===== CARD ===== */
+.card{ border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; background: white; }
+.card:hover{ transform: translateY(-5px); }
+/* ===== TOP NAV ===== */
+.top-navbar{ background: white; padding: 15px 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+/* ===== MOBILE ===== */
+.menu-btn{ display: none; font-size: 24px; cursor: pointer; }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px){ .sidebar{ left: -250px; } .sidebar.active{ left: 0; } .main-content{ margin-left: 0; } .menu-btn{ display: block; } }
+
+/* BUTTON */
+.btn-track{ width: 100%; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(45deg,#00c6ff,#0072ff); color: white; font-weight: bold;}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div class="p-4 text-center">
+        <h5>Complaint System</h5>
+    </div>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a href="{% url 'user_dashboard_view' %}" class="nav-link">
+                <i class="bi bi-house me-2"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'user_complain_view' %}" class="nav-link">
+                <i class="bi bi-plus-circle me-2"></i> Submit Complaint
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'track_complaint_view' %}" class="nav-link active">
+                <i class="bi bi-search me-2"></i> Track Complaint
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{% url 'track_history_view' %}" class="nav-link">
+                <i class="bi bi-clock-history me-2"></i> View History
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+
+    <!-- TOP NAV -->
+    <div class="top-navbar">
+        <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+        <h5 class="m-0">Track Complaint</h5>
+        <div class="d-flex align-items-center gap-3">
+            <div class="dropdown">
+                <i class="bi bi-bell fs-5 position-relative" data-bs-toggle="dropdown" style="cursor: pointer;">
+                    {% if unread_notifications_count > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </i>
+                <ul class="dropdown-menu dropdown-menu-end p-0 shadow" style="width: 300px; border-radius: 10px; overflow: hidden;">
+                    <li class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Notifications</span>
+                        {% if unread_notifications_count > 0 %}
+                        <a href="{% url 'mark_notifications_read' %}" class="text-decoration-none small">Mark all read</a>
+                        {% endif %}
+                    </li>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        {% for notif in user_notifications %}
+                        <li class="p-3 border-bottom {% if not notif.is_read %}bg-light{% endif %}">
+                            <small class="d-block text-muted mb-1">{{ notif.created_at|timesince }} ago</small>
+                            <span class="d-block fs-6">{{ notif.message }}</span>
+                        </li>
+                        {% empty %}
+                        <li class="p-4 text-center text-muted">
+                            <i class="bi bi-bell-slash fs-3 d-block mb-2"></i>
+                            No notifications yet
+                        </li>
+                        {% endfor %}
+                    </div>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                    {% if request.user.userprofile.profile_picture %}
+                        <img src="{{ request.user.userprofile.profile_picture.url }}" alt="Profile" class="rounded-circle" width="30" height="30" style="object-fit: cover;">
+                    {% else %}
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile" class="rounded-circle" width="30" height="30" style="object-fit: cover;">
+                    {% endif %}
+                    {{ request.user.username|default:"Profile" }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'profile_manage_view' %}">Settings</a></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'login_view' %}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container-fluid p-4">
+        <div class="row justify-content-center">
+            
+            <div class="col-lg-6 col-md-8">
+                <!-- SEARCH -->
+                <div class="card p-4 mb-4">
+                    <h4 class="text-primary border-bottom pb-3 mb-4"><i class="bi bi-search me-2"></i>Search Complaint</h4>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Enter CNIC associated with Complaint</label>
+                            <input type="text" name="cnic" class="form-control form-control-lg bg-light" placeholder="12345-1234567-1" required>
+                        </div>
+                        <button class="btn-track shadow-sm"><i class="bi bi-crosshair me-2"></i>Track Status</button>
+                    </form>
+                </div>
+
+                <!-- RESULT -->
+                {% if complaint %}
+                <div class="card p-4 border-top border-success border-4">
+                    <h5 class="text-success"><i class="bi bi-info-circle-fill me-2"></i>Complaint Details</h5>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 fw-bold text-muted">Name:</div>
+                        <div class="col-sm-8">{{ complaint.name }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 fw-bold text-muted">CNIC:</div>
+                        <div class="col-sm-8">{{ complaint.cnic }}</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-4 fw-bold text-muted">Category:</div>
+                        <div class="col-sm-8"><span class="badge bg-secondary">{{ complaint.category }}</span></div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-sm-4 fw-bold text-muted">Description:</div>
+                        <div class="col-sm-8">{{ complaint.description }}</div>
+                    </div>
+
+                    <h6 class="fw-bold mb-3">Current Status</h6>
+                    <div class="progress mb-2" style="height: 12px; border-radius: 10px;">
+                        {% if complaint.status == "Pending" %}
+                            <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width:30%"></div>
+                        {% elif complaint.status == "In Progress" %}
+                            <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" style="width:70%"></div>
+                        {% elif complaint.status == "Rejected" %}
+                            <div class="progress-bar bg-danger" style="width:100%"></div>
+                        {% else %}
+                            <div class="progress-bar bg-success" style="width:100%"></div>
+                        {% endif %}
+                    </div>
+                    <div class="text-end small fw-bold mt-1">
+                        {% if complaint.status == "Pending" %} <span class="text-warning">Pending Review</span>
+                        {% elif complaint.status == "In Progress" %} <span class="text-info">In Progress</span>
+                        {% elif complaint.status == "Rejected" %} <span class="text-danger">Rejected</span>
+                        {% else %} <span class="text-success">{{ complaint.status }}</span> {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+function toggleSidebar(){
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

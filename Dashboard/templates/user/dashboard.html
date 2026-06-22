@@ -1,70 +1,264 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-        <!-- CDN -->
-    <!-- For css -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <!-- For js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizen Dashboard</title>
 
-<!-- Local system -->
-<link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
-<script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+
+/* ===== BODY ===== */
+body{
+    background-color: #f4f7f6;
+    margin: 0;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+    min-height: 100vh;
+    background: #2c3e50;
+    color: white;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.sidebar .nav-link{
+    color: #bdc3c7;
+    padding: 15px 20px;
+    transition: 0.3s;
+}
+
+.sidebar .nav-link:hover{
+    color: white;
+    background: #34495e;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content{
+    margin-left: 250px;
+    transition: 0.3s;
+}
+
+/* ===== CARD ===== */
+.card{
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: 0.3s;
+}
+
+.card:hover{
+    transform: translateY(-5px);
+}
+
+/* ===== TOP NAV ===== */
+.top-navbar{
+    background: white;
+    padding: 15px 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ===== MOBILE ===== */
+.menu-btn{
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px){
+
+    .sidebar{
+        left: -250px;
+    }
+
+    .sidebar.active{
+        left: 0;
+    }
+
+    .main-content{
+        margin-left: 0;
+    }
+
+    .menu-btn{
+        display: block;
+    }
+}
+
+</style>
 </head>
+
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container">
-            <img src="pro.jpg" width="60">
-            <a class="navbar-brand fw-bold" href="#">CITIZEN PORTAL</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="portalhome.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="portalcomplaint.html">User Complaint</a></li>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+    <div class="p-4 text-center">
+        <h5>Complaint System</h5>
+    </div>
+
+    <ul class="nav nav-pills flex-column mb-auto">
+
+        <li class="nav-item">
+            <a href="{% url 'user_dashboard_view' %}" class="nav-link active">
+                <i class="bi bi-house me-2"></i> Dashboard
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{% url 'user_complain_view' %}" class="nav-link">
+                <i class="bi bi-plus-circle me-2"></i> Submit Complaint
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{% url 'track_complaint_view' %}" class="nav-link">
+                <i class="bi bi-search me-2"></i> Track Complaint
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{% url 'track_history_view' %}" class="nav-link">
+                <i class="bi bi-clock-history me-2"></i> View History
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+
+    <!-- TOP NAV -->
+    <div class="top-navbar">
+
+        <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+
+        <h5 class="m-0">Overview</h5>
+
+        <div class="d-flex align-items-center gap-3">
+
+            <div class="dropdown">
+                <i class="bi bi-bell fs-5 position-relative" data-bs-toggle="dropdown" style="cursor: pointer;">
+                    {% if unread_notifications_count > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </i>
+                <ul class="dropdown-menu dropdown-menu-end p-0 shadow" style="width: 300px; border-radius: 10px; overflow: hidden;">
+                    <li class="p-3 border-bottom bg-light d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Notifications</span>
+                        {% if unread_notifications_count > 0 %}
+                        <a href="{% url 'mark_notifications_read' %}" class="text-decoration-none small">Mark all read</a>
+                        {% endif %}
+                    </li>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        {% for notif in user_notifications %}
+                        <li class="p-3 border-bottom {% if not notif.is_read %}bg-light{% endif %}">
+                            <small class="d-block text-muted mb-1">{{ notif.created_at|timesince }} ago</small>
+                            <span class="d-block fs-6">{{ notif.message }}</span>
+                        </li>
+                        {% empty %}
+                        <li class="p-4 text-center text-muted">
+                            <i class="bi bi-bell-slash fs-3 d-block mb-2"></i>
+                            No notifications yet
+                        </li>
+                        {% endfor %}
+                    </div>
                 </ul>
             </div>
-        </div>
-    </nav>
 
-    <div class="container my-5">
-        <div class="card p-4 shadow-sm">
-            <h2 class="text-success border-bottom pb-2">Submit New Complaint</h2>
-            <form class="was-validated">
-                <div class="mb-3 mt-3">
-                    <div class="mb-3">
-                   <label class="form-label">Enter Name *</label><br>
-                   <input type="text" class="form-control" size="30">>
-                </div>
-                 <div class="mb-3">
-                  <label class="form-label">Enter CNIC *</label><br>
-                  <input type="text"  class="form-control" size="30">
-                 </div>
-                    <label class="form-label fw-bold">Complaint Category:</label>
-                    <select class="form-select" required>
-                        <option value="">Select Category</option>
-                        <option>Road Damage</option>
-                        <option>Electricity Fault</option>
-                        <option>Water Supply</option>
-                    </select>
-                    <div class="invalid-feedback">Please select a category.</div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Detailed Description:</label>
-                    <textarea class="form-control" rows="5" required placeholder="Describe the issue..."></textarea>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Evidence (Image/Video):</label>
-                    <input type="file" class="form-control" required>
-                </div>
-                <button type="submit" class="btn btn-success px-5">Submit Complaint</button>
-            </form>
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+                    {% if request.user.userprofile.profile_picture %}
+                        <img src="{{ request.user.userprofile.profile_picture.url }}" alt="Profile" class="rounded-circle" width="30" height="30" style="object-fit: cover;">
+                    {% else %}
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile" class="rounded-circle" width="30" height="30" style="object-fit: cover;">
+                    {% endif %}
+                    {{ request.user.username|default:"Profile" }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{% url 'profile_manage_view' %}">Settings</a></li>
+                    <li>
+    <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+        Logout
+    </a>
+</li>
+                </ul>
+            </div>
+
         </div>
     </div>
 
-    <footer class="bg-dark text-white text-center py-4 mt-5">
-        <p>© 2026 Citizen's Complaint Portal | HITEC University Project</p>
-    </footer>
+    <!-- DASHBOARD CARDS -->
+    <div class="container-fluid p-4">
+
+        <div class="row g-4">
+
+            <!-- CARD 1 -->
+            <div class="col-md-4">
+                <div class="card p-4 text-center">
+                    <i class="bi bi-pencil-square fs-1 text-primary"></i>
+                    <h5>Submit Complaint</h5>
+                    <p class="text-muted">File a new concern here</p>
+                    <button class="btn btn-outline-primary"
+                        onclick="window.location.href='{% url 'user_complain_view' %}'">
+                        Open Form
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 2 -->
+            <div class="col-md-4">
+                <div class="card p-4 text-center">
+                    <i class="bi bi-geo-alt fs-1 text-warning"></i>
+                    <h5>Track Complaint</h5>
+                    <p class="text-muted">Check your current status</p>
+                    <button class="btn btn-outline-warning"
+                        onclick="window.location.href='{% url 'track_complaint_view' %}'">
+                        Track Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 3 -->
+            <div class="col-md-4">
+                <div class="card p-4 text-center">
+                    <i class="bi bi-clock-history fs-1 text-success"></i>
+                    <h5>View History</h5>
+                    <p class="text-muted">Review past submissions</p>
+                    <button class="btn btn-outline-success" onclick="window.location.href='{% url 'track_history_view' %}'">
+                        View Archive
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+function toggleSidebar(){
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

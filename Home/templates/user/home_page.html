@@ -2,60 +2,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-       <!-- CDN -->
-    <!-- For css -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <!-- For js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
 
-<!-- Local system -->
+<!-- CDN Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<!-- Local (kept same) -->
 <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
 <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 116e52c958d2d2e2fb95c509bcbc4cfc93c7c9d7
 </head>
+
 <body>
 
+<<<<<<< HEAD
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+=======
+<!-- NAVBAR (only responsive fixes added via Bootstrap structure) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+>>>>>>> 116e52c958d2d2e2fb95c509bcbc4cfc93c7c9d7
     <div class="container">
-         <img src="pro.jpg" class="rounded"    width="60">
+
+        <!-- FIX: responsive image styled as logotype -->
+        <img src="{% static 'media/logo.png' %}" style="height: 45px; width: auto; object-fit: contain;" alt="Citizen Portal Logo" class="me-2">
+
         <a class="navbar-brand fw-bold" href="#">CITIZEN PORTAL</a>
+
+        <!-- toggler -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link active" href="{% url 'user_dashboard_view' %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'login_view' %}">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="{%url 'register_view' %}">registration</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'register_view' %}"> User Complaint</a></li>
-                <li class="nav-item"><a class="nav-link" href = "{% url 'login_view' %}">   Admin Dashboard</a></li>
-                
-            </ul>
-            </ul>
+
+            <!-- FIX: removed extra closing </ul> -->
+            <ul class="navbar-nav ms-auto text-center text-lg-start">
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'home_page_view' %}">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login_view' %}">Login</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register_view' %}">registration</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register_view' %}">User Complaint</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login_view' %}">Admin Dashboard</a>
+                </li>
+
             </ul>
         </div>
+
     </div>
 </nav>
 
-<div id="heroSlider" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <div class="bg-success text-white p-5 text-center" style="height: 400px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                <h1 class="display-4 fw-bold">Digitizing Public Grievances</h1>
-                <p class="lead">Bridge the gap between citizens and authorities.</p>
-                <a href="{% url 'register_view' %}" class="btn btn-warning btn-lg">Join Us Now</a>
+<!-- HERO SECTION -->
+<div id="heroSlider" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-pause="false" data-bs-interval="5000">
+    
+    <!-- Indicators/dots -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="4" aria-label="Slide 5"></button>
+    </div>
+
+    <div class="carousel-inner" style="height: 80vh; min-height: 400px; max-height: 800px; overflow: hidden;">
+
+        <!-- Slide 1: Video -->
+        <div class="carousel-item active h-100">
+            <video class="d-block w-100 h-100 hero-media" autoplay loop muted playsinline>
+                <source src="{% static 'media/Vid 1.3.mp4' %}" type="video/mp4">
+            </video>
+            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 hero-overlay">
+                <h1 class="display-3 fw-bold text-wrap text-white hero-title">Digitizing Public Grievances</h1>
+                <p class="lead text-white hero-subtitle">Bridge the gap between citizens and authorities.</p>
+                <a href="{% url 'register_view' %}" class="btn btn-warning btn-lg hero-btn mt-4">Join Us Now</a>
+            </div>
+        </div>
+
+        <!-- Slide 2: Image -->
+        <div class="carousel-item h-100">
+            <img src="{% static 'media/electricity_issue.png' %}" class="d-block w-100 h-100 hero-media" alt="Electricity Issue">
+            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 hero-overlay">
+                <h2 class="display-4 fw-bold text-white text-wrap hero-title">Resolve Electricity Issues</h2>
+                <p class="lead text-white hero-subtitle">Report and track power outages efficiently.</p>
+                <a href="{% url 'register_view' %}" class="btn btn-warning btn-lg hero-btn mt-4">File a Complaint</a>
+            </div>
+        </div>
+
+        <!-- Slide 3: Image -->
+        <div class="carousel-item h-100">
+            <img src="{% static 'media/electricity_issue2.png' %}" class="d-block w-100 h-100 hero-media" alt="Electricity Issue 2">
+            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 hero-overlay">
+                <h2 class="display-4 fw-bold text-white text-wrap hero-title">Track Your Reports</h2>
+                <p class="lead text-white hero-subtitle">Get real-time updates on your submitted issues.</p>
+                <a href="{% url 'register_view' %}" class="btn btn-warning btn-lg hero-btn mt-4">Join Us Now</a>
+            </div>
+        </div>
+
+        <!-- Slide 4: Image -->
+        <div class="carousel-item h-100">
+            <img src="{% static 'media/road_issue.png' %}" class="d-block w-100 h-100 hero-media" alt="Road Issue">
+            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 hero-overlay">
+                <h2 class="display-4 fw-bold text-white text-wrap hero-title">Report Road Damage</h2>
+                <p class="lead text-white hero-subtitle">Help authorities maintain safe and clean roads.</p>
+                <a href="{% url 'register_view' %}" class="btn btn-warning btn-lg hero-btn mt-4">File a Complaint</a>
+            </div>
+        </div>
+
+        <!-- Slide 5: Image -->
+        <div class="carousel-item h-100">
+            <img src="{% static 'media/sanitation_issue.png' %}" class="d-block w-100 h-100 hero-media" alt="Sanitation Issue">
+            <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 hero-overlay">
+                <h2 class="display-4 fw-bold text-white text-wrap hero-title">Improve Sanitation</h2>
+                <p class="lead text-white hero-subtitle">Ensure a clean environment for everyone.</p>
+                <a href="{% url 'register_view' %}" class="btn btn-warning btn-lg hero-btn mt-4">Join Us Now</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroSlider" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- CUSTOM CSS for Animations -->
+<style>
+    /* Hero media styles */
+    .hero-media {
+        object-fit: cover;
+        transform: scale(1.1);
+        transition: transform 10s ease-in-out;
+    }
+    .carousel-item.active .hero-media {
+        transform: scale(1);
+    }
+    
+    /* Overlay */
+    .hero-overlay {
+        background: rgba(0, 0, 0, 0.6);
+        top: 0; bottom: 0; left: 0; right: 0;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+    .carousel-item.active .hero-overlay {
+        opacity: 1;
+    }
+    
+    /* Text animations */
+    .hero-title, .hero-subtitle, .hero-btn {
+        opacity: 0;
+    }
+    .hero-title {
+        transform: translateY(-30px);
+        transition: transform 0.8s ease-out 0.4s, opacity 0.8s ease-out 0.4s;
+    }
+    .carousel-item.active .hero-title {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .hero-subtitle {
+        transform: translateY(30px);
+        transition: transform 0.8s ease-out 0.6s, opacity 0.8s ease-out 0.6s;
+    }
+    .carousel-item.active .hero-subtitle {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
+    .hero-btn {
+        transform: scale(0.8);
+        transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.8s, opacity 0.6s ease-out 0.8s;
+    }
+    .carousel-item.active .hero-btn {
+        transform: scale(1);
+        opacity: 1;
+        /* maintain hover effects */
+    }
+    .hero-btn:hover {
+        transform: scale(1.05) !important;
+        transition: transform 0.2s ease-in-out !important;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .carousel-inner {
+            height: 60vh !important;
+        }
+        .hero-title {
+            font-size: 2rem !important;
+        }
+        .hero-subtitle {
+            font-size: 1.1rem !important;
+        }
+    }
+    @media (max-width: 576px) {
+        .carousel-inner {
+            height: 50vh !important;
+        }
+        .hero-title {
+            font-size: 1.5rem !important;
+        }
+        .hero-subtitle {
+            font-size: 1rem !important;
+        }
+        .hero-btn {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<!-- MAIN CONTENT SECTIONS -->
+<main class="container my-5 pt-5">
+    
+    <!-- About Section -->
+    <section class="text-center mb-5 pb-4">
+        <h2 class="display-5 fw-bold mb-3">Empowering Citizens, Improving Cities</h2>
+        <p class="lead text-muted mx-auto" style="max-width: 800px;">
+            Our portal provides a transparent and efficient way to report public issues directly to the authorities. From broken streetlights to road damage, your voice helps build a better community.
+        </p>
+    </section>
+
+    <!-- Features Section -->
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <div class="col d-flex align-items-start">
+            <div class="icon-square text-bg-success d-inline-flex align-items-center justify-content-center fs-1 flex-shrink-0 me-3 p-3 rounded-3">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <div>
+                <h3 class="fs-4 fw-bold text-body-emphasis">Secure & Anonymous</h3>
+                <p class="text-muted">Report issues with complete confidence. Your data is encrypted and you have the option to remain anonymous while helping the community.</p>
+            </div>
+        </div>
+        <div class="col d-flex align-items-start">
+            <div class="icon-square text-bg-warning d-inline-flex align-items-center justify-content-center fs-1 flex-shrink-0 me-3 p-3 rounded-3 text-dark">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <div>
+                <h3 class="fs-4 fw-bold text-body-emphasis">Real-time Tracking</h3>
+                <p class="text-muted">Stay updated on the status of your complaints. Receive notifications when action is taken and issues are resolved by the concerned authorities.</p>
+            </div>
+        </div>
+        <div class="col d-flex align-items-start">
+            <div class="icon-square text-bg-primary d-inline-flex align-items-center justify-content-center fs-1 flex-shrink-0 me-3 p-3 rounded-3">
+                <i class="bi bi-geo-alt"></i>
+            </div>
+            <div>
+                <h3 class="fs-4 fw-bold text-body-emphasis">Location Mapping</h3>
+                <p class="text-muted">Pinpoint the exact location of the issue on the map, allowing utility workers and municipality staff to find and fix problems faster.</p>
             </div>
         </div>
     </div>
-</div>
 
-<footer class="bg-dark text-white text-center py-4 mt-5">
-    <p>© 2026 Citizen's Complaint Portal | HITEC University Project</p>
+    <!-- How It Works Section -->
+    <section class="py-5 bg-light rounded-4 px-4 px-md-5 my-5 text-center shadow-sm">
+        <h2 class="fw-bold mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="display-4 text-success mb-3"><i class="bi bi-1-circle-fill"></i></div>
+                <h4 class="fw-bold">Register & Login</h4>
+                <p class="text-muted">Create an account or login to access the reporting dashboard securely.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="display-4 text-success mb-3"><i class="bi bi-2-circle-fill"></i></div>
+                <h4 class="fw-bold">File a Complaint</h4>
+                <p class="text-muted">Upload photos, provide details, and submit your public grievance.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="display-4 text-success mb-3"><i class="bi bi-3-circle-fill"></i></div>
+                <h4 class="fw-bold">Get it Resolved</h4>
+                <p class="text-muted">Authorities review the issue, take action, and update the status.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- INDUSTRIAL FOOTER -->
+<footer class="bg-dark text-light pt-5 pb-3 mt-5">
+    <div class="container">
+        <div class="row gy-4">
+            
+            <!-- Brand & About -->
+            <div class="col-lg-4 col-md-6">
+                <h5 class="text-white fw-bold mb-3 d-flex align-items-center">
+                    <img src="{% static 'media/logo.png' %}" alt="Citizen Portal Logo" style="height: 40px; width: auto; object-fit: contain;" class="me-2 mb-1 bg-white rounded p-1">
+                    CITIZEN PORTAL
+                </h5>
+                <p class="text-muted small pe-lg-4">
+                    A centralized grievance redressal platform dedicated to bridging the gap between citizens and local authorities for a cleaner, safer, and better society.
+                </p>
+                <div class="d-flex gap-3 mt-3">
+                    <a href="#" class="text-light fs-5 footer-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light fs-5 footer-icon"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="text-light fs-5 footer-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-light fs-5 footer-icon"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6">
+                <h5 class="text-white fw-bold mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="{% url 'home_page_view' %}" class="text-muted text-decoration-none footer-link">Home</a></li>
+                    <li class="mb-2"><a href="{% url 'login_view' %}" class="text-muted text-decoration-none footer-link">Login</a></li>
+                    <li class="mb-2"><a href="{% url 'register_view' %}" class="text-muted text-decoration-none footer-link">Register</a></li>
+                    <li class="mb-2"><a href="{% url 'register_view' %}" class="text-muted text-decoration-none footer-link">File Complaint</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal -->
+            <div class="col-lg-2 col-md-6">
+                <h5 class="text-white fw-bold mb-3">Legal</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none footer-link">Terms of Service</a></li>
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none footer-link">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none footer-link">Cookie Policy</a></li>
+                    <li class="mb-2"><a href="#" class="text-muted text-decoration-none footer-link">Accessibility</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact & Newsletter -->
+            <div class="col-lg-4 col-md-6">
+                <h5 class="text-white fw-bold mb-3">Contact Us</h5>
+                <ul class="list-unstyled text-muted small mb-4">
+                    <li class="mb-2"><i class="bi bi-geo-alt-fill text-success me-2"></i> HITEC University, Taxila</li>
+                    <li class="mb-2"><i class="bi bi-telephone-fill text-success me-2"></i> +92 300 1234567</li>
+                    <li class="mb-2"><i class="bi bi-envelope-fill text-success me-2"></i> support@citizenportal.com</li>
+                </ul>
+                <form class="d-flex w-100 gap-2">
+                    <label for="newsletter1" class="visually-hidden">Email address</label>
+                    <input id="newsletter1" type="email" class="form-control" placeholder="Email address" required>
+                    <button class="btn btn-success" type="button">Subscribe</button>
+                </form>
+            </div>
+            
+        </div>
+
+        <hr class="my-4 border-secondary">
+
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+            <p class="mb-0 text-muted small">© 2026 Citizen's Complaint Portal. All rights reserved.</p>
+            <p class="mb-0 text-muted small mt-2 mt-sm-0">Developed for HITEC University Project</p>
+        </div>
+    </div>
 </footer>
 
+<style>
+    /* Footer Custom Styles */
+    .footer-link {
+        transition: color 0.3s ease, padding-left 0.3s ease;
+    }
+    .footer-link:hover {
+        color: #198754 !important; /* Bootstrap success color */
+        padding-left: 5px;
+    }
+    .footer-icon {
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .footer-icon:hover {
+        color: #198754 !important;
+        transform: translateY(-3px);
+    }
+    /* Section enhancements */
+    .icon-square {
+        width: 4rem;
+        height: 4rem;
+    }
+</style>
 
-    
 </body>
 </html>
