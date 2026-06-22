@@ -20,7 +20,6 @@ from Dashboard.models import Complaint
 from django.contrib.auth import logout
 # function start
 # Home 
-@login_required
 def home_page_view(request):
      return render(request, 'user/home_page.html')
 
