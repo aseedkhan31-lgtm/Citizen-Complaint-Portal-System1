@@ -57,7 +57,11 @@ ROOT_URLCONF = 'complaint_portal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'Home' / 'templates'],
+       'DIRS': [
+            BASE_DIR / 'Home' / 'templates',
+            BASE_DIR / 'Dashboard' / 'templates',
+        ],
+        
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,3 +130,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

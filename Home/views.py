@@ -62,12 +62,9 @@ def login_view(request):
                 return redirect('admin_dashboard_view')
             else:
                 return redirect('dashboardApp')
-
-            return redirect('home_page_view')
         else:
-            return render(request, 'login.html' , {
+            return render(request, 'auth/login.html' , {
                 'error': 'Invalid username or password'
             })
 
     return render(request, 'auth/login.html')
-
