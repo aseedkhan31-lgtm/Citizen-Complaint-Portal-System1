@@ -14,10 +14,9 @@
 <!-- Local system -->
 <link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
 <script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
-
-
 </head>
 <body>
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
          <img src="pro.jpg" class="rounded"    width="60">
@@ -46,7 +45,7 @@
             <div class="bg-success text-white p-5 text-center" style="height: 400px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
                 <h1 class="display-4 fw-bold">Digitizing Public Grievances</h1>
                 <p class="lead">Bridge the gap between citizens and authorities.</p>
-                <a href="portalregistration.html" class="btn btn-warning btn-lg">Join Us Now</a>
+                <a href="{% url 'register_view' %}" class="btn btn-warning btn-lg">Join Us Now</a>
             </div>
         </div>
     </div>
