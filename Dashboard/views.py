@@ -27,6 +27,7 @@ def user_complain_view(request):
 
         Complaint.objects.create(
             user=request.user,
+            department=profile.department,
             name=name,
             cnic=cnic,
             category=category,

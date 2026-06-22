@@ -10,17 +10,48 @@ from . models import registration_details
 from django.contrib.auth import authenticate, login
 
 from django.contrib.auth.decorators import login_required
-# def home(request):
-#     return HttpResponse("Welcome to the Citizen Complaint Portal!")
+
+# accounts login role
+
+from accounts.models import UserProfile
+
+from Dashboard.models import Complaint
+
+from django.contrib.auth import logout
+# function start
+# Home 
 @login_required
 def home_page_view(request):
      return render(request, 'user/home_page.html')
 
+# Home
 def admin_dashboard_view(request):
-     return render(request, 'admin/home_page.html')
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+    complaints = Complaint.objects.filter(
+    department=profile.department
+)
+    pending_count = complaints.filter(status="Pending").count()
+    resolved_count = complaints.filter(status="Resolved").count()
+    return render(request, 'admin/home_page.html',{
+        'complaints': complaints
+     })
+# Home
+def update_complaint(request, id):
+    complaint = Complaint.objects.get(id=id)
+
+    if request.method == "POST":
+        complaint.status = request.POST['status']
+        complaint.save()
+        return redirect('admin_dashboard_view')
+
+    return render(request, 'admin/home_page.html', {'complaint': complaint})
+
+# Dashboard
 def dashboardApp(request):
     return render(request, 'user/dashboard.html')
 
+# Home
 def register_view(request):
     if request.method == 'POST':
         full_name = request.POST.get('full_name')  
@@ -49,6 +80,7 @@ def register_view(request):
         return redirect('login_view')
     return render(request, 'auth/register.html')
 
+# Home
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -60,11 +92,21 @@ def login_view(request):
             login(request, user)
             if user.is_superuser:
                 return redirect('admin_dashboard_view')
+
+            profile, created = UserProfile.objects.get_or_create(user=user)
+
+            if profile.role == 'admin':
+                return redirect('admin_dashboard_view')
             else:
                 return redirect('dashboardApp')
+            
         else:
             return render(request, 'auth/login.html' , {
                 'error': 'Invalid username or password'
             })
 
     return render(request, 'auth/login.html')
+# logout
+def logout_view(request):
+    logout(request)
+    return redirect('login_view')

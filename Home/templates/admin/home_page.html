@@ -1,76 +1,191 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-        <!-- CDN -->
-    <!-- For css -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <!-- For js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Local system -->
-<link rel="stylesheet" href="bootstrap-5.3.8-dist/css/bootstrap.min.css">
-<script src="bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
+<title>Admin Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+<style>
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background: #111827;
+    color: white;
+    padding-top: 20px;
+}
+
+.sidebar h4{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar a{
+    display: block;
+    color: #cbd5e1;
+    padding: 12px 20px;
+    text-decoration: none;
+}
+
+.sidebar a:hover{
+    background: #1f2937;
+    color: white;
+}
+
+/* ===== MAIN ===== */
+.main-content{
+    margin-left: 250px;
+    padding: 20px;
+}
+
+/* ===== CARDS ===== */
+.card{
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* ===== TABLE ===== */
+.table th{
+    background: #f1f5f9;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+    .sidebar{
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .main-content{
+        margin-left: 0;
+    }
+}
+
+</style>
 </head>
+
 <body>
-    {% csrf_token %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container">
-            <img src="pro.jpg" width="60">
-            <a class="navbar-brand fw-bold" href="#">ADMIN PANEL</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    
-                    <li class="nav-item"><a class="nav-link active" href="{% url 'admin_dashboard_view' %}">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'user_dashboard_view' %}">Logout</a></li>
-                    
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container my-5">
-        <div class="row g-3 mb-4">
-            <div class="col-md-4">
-                <div class="card bg-primary text-white p-3"><h5>Total Cases: 150</h5></div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-warning p-3"><h5>Pending: 45</h5></div>
-            </div>
-            <div class="col-md-4">
-                <div class="card bg-success text-white p-3"><h5>Resolved: 105</h5></div>
-            </div>
-        </div>
+<!-- SIDEBAR -->
+<div class="sidebar">
 
-        <div class="card shadow">
-            <div class="card-header bg-dark text-white">Recent Complaints</div>
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Citizen</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#001</td>
-                            <td>Abdul Salam</td>
-                            <td>Road Damage</td>
-                            <td><span class="badge bg-warning">In Progress</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <h4>Admin Panel</h4>
+
+    <a href="#"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="#"><i class="bi bi-list-task"></i> Complaints</a>
+    <a href="#"><i class="bi bi-check-circle"></i> Resolved</a>
+    <a href="#"><i class="bi bi-clock"></i> Pending</a>
+    <a href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+
+    <!-- TOP BAR -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h3>Department Dashboard</h3>
+
+        <span class="badge bg-primary">
+            {{ request.user.username }}
+        </span>
+
     </div>
 
-    <footer class="bg-dark text-white text-center py-4 mt-5">
-        <p>© 2026 Citizen's Complaint Portal | HITEC University Project</p>
-    </footer>
+    <!-- STATS -->
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <div class="card p-3 text-center">
+                <h5>Total Complaints</h5>
+                <h2>{{ complaints|length }}</h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 text-center">
+                <h5>Pending</h5>
+                <h2>
+                    {{ pending_count }}
+                </h2>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 text-center">
+                <h5>Resolved</h5>
+                <h2>
+                    {{ resolved_count }}
+                </h2>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- COMPLAINT TABLE -->
+    <div class="card p-3">
+
+        <h5 class="mb-3">Department Complaints</h5>
+
+        <div class="table-responsive">
+
+        <table class="table table-hover">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>CNIC</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for c in complaints %}
+
+                <tr>
+                    <td>{{ c.id }}</td>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.cnic }}</td>
+                    <td>{{ c.category }}</td>
+
+                    <td>
+                        <span class="badge bg-warning">{{ c.status }}</span>
+                    </td>
+
+                    <td>
+                        <a href="{% url 'update_complaint' c.id %}" class="btn btn-sm btn-primary">
+                            Update
+                        </a>
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
