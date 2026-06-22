@@ -113,6 +113,13 @@ def profile_manage_view(request):
     })
 
 # logout
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login_view')
+
+@login_required
+def mark_notifications_read(request):
+    from .models import Notification
+    Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+    return redirect(request.META.get('HTTP_REFERER', 'user_dashboard_view'))

@@ -11,4 +11,5 @@ urlpatterns = [
     path('complaint/track_history', views.track_history_view, name='track_history_view'),
     
     path('management/', views.profile_manage_view, name='profile_manage_view'),
+    path('mark_notifications_read/', views.mark_notifications_read, name='mark_notifications_read'),
 ]

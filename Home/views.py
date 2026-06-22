@@ -38,11 +38,21 @@ def admin_dashboard_view(request):
      })
 # Home
 def update_complaint(request, id):
+    from django.contrib import messages
+    from Dashboard.models import Notification
     complaint = Complaint.objects.get(id=id)
 
     if request.method == "POST":
         complaint.status = request.POST['status']
         complaint.save()
+
+        # Create Notification for the user
+        Notification.objects.create(
+            user=complaint.user,
+            message=f"Your complaint #{complaint.id} status has been updated to {complaint.status}."
+        )
+
+        messages.success(request, f"Complaint #{complaint.id} status updated to {complaint.status}!")
         return redirect('admin_dashboard_view')
 
     return render(request, 'admin/home_page.html', {'complaint': complaint})
