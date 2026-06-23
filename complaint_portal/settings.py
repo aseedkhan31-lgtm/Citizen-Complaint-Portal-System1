@@ -99,6 +99,18 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'NAME': 'ComplaintDB',
+#         'USER': 'sa',
+#         'PASSWORD': 'Java123',
+#         'HOST': 'localhost',
+#         'PORT': '1433',
+#         'OPTIONS': { 'driver': 'ODBC Driver 17 for SQL Server', },
+     
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
