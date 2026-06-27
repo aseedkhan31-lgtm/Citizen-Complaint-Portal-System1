@@ -377,25 +377,27 @@
 </footer>
 
 <style>
-    /* Footer Custom Styles */
-    .footer-link {
-        transition: color 0.3s ease, padding-left 0.3s ease;
-    }
-    .footer-link:hover {
-        color: #198754 !important; /* Bootstrap success color */
-        padding-left: 5px;
-    }
-    .footer-icon {
+    /* Footer links */
+    .footer-link{
+        display: inline-block; /* Important */
+        color: #6c757d !important;
         transition: color 0.3s ease, transform 0.3s ease;
     }
-    .footer-icon:hover {
+
+    .footer-link:hover{
+        color: greenyellow !important;
+        transform: translateX(5px);
+        text-decoration: none;
+    }
+
+    /* Social icons */
+    .footer-icon{
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .footer-icon:hover{
         color: #198754 !important;
         transform: translateY(-3px);
-    }
-    /* Section enhancements */
-    .icon-square {
-        width: 4rem;
-        height: 4rem;
     }
 </style>
 
