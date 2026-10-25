@@ -87,26 +87,16 @@ WSGI_APPLICATION = 'complaint_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-<<<<<<< HEAD
         'NAME': 'ComplaintDB',
-      'HOST': r'DESKTOP-OF4VT0M\SQLEXPRESS',
-       'PORT': '',
+        'HOST': r'DESKTOP-OF4VT0M\SQLEXPRESS',
+        'PORT': '',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
             'trusted_connection': 'yes',
-=======
-        'NAME': 'CCMS_DB',
-        'USER': 'adminuser',
-        'PASSWORD': 'StrongPassword123!',
-        'HOST': 'ccms-sql-server.database.windows.net',
-        'PORT': '1433',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'extra_params': 'Encrypt=yes;TrustServerCertificate=no;'
->>>>>>> 4018664b475f29c235f9fdad465df1f9b99178a4
         },
     }
 }
+
 
 # DATABASES = {
 #     'default': {
@@ -160,3 +150,5 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = '/login/'
+
+
